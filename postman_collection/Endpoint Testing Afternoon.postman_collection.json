@@ -1,8 +1,7 @@
 {
 	"info": {
+		"_postman_id": "04c81cb0-9145-42ab-a288-6b5dc51bee2d",
 		"name": "Endpoint Testing Afternoon",
-		"_postman_id": "e51be2b4-157e-e958-cc69-98d89cb8c491",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -13,17 +12,32 @@
 					"listen": "test",
 					"script": {
 						"id": "59508489-d2fe-48f5-80f4-41618631a572",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function() {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned data is an array\", function() {\r",
+							"  pm.expect(Array.isArray(response)).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned data has a length of 100\", function() {\r",
+							"  pm.expect(response.length).to.eql(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:3535/api/users",
 					"protocol": "http",
@@ -46,17 +60,44 @@
 					"listen": "test",
 					"script": {
 						"id": "d0cf10d9-0a29-4fe5-b598-603c20b05f65",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"const response = pm.response.json();\r",
+							"\r",
+							"const expectedData = {\r",
+							"  id: 9,\r",
+							"  first_name: \"Tatum\",\r",
+							"  last_name: \"Vell\",\r",
+							"  email: \"tvell8@wisc.edu\",\r",
+							"  city: \"Youngstown\",\r",
+							"  state: \"Ohio\",\r",
+							"  phone: \"(330) 6802507\"\r",
+							"};\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function() {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned data is an Array with length of 1\", function() {\r",
+							"  pm.expect(Array.isArray(response)).to.eql(true);\r",
+							"  pm.expect(response.length).to.eql(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned data is expected\", function() {\r",
+							"  pm.expect(response[0]).to.eql(expectedData);\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "localhost:3535/api/users/9",
 					"host": [
@@ -79,17 +120,26 @@
 					"listen": "test",
 					"script": {
 						"id": "71245e8b-7ae6-48df-8660-4c5f7885d4c7",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"pm.test(\"Status code is 400\", function() {\r",
+							"  pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned error message is expected\", function() {\r",
+							"  pm.expect(pm.response.text()).to.eql(\"User id sent must be a number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "localhost:3535/api/users/id",
 					"host": [
@@ -112,17 +162,28 @@
 					"listen": "test",
 					"script": {
 						"id": "d3dd0bed-0860-4dab-880d-c61306c2e92c",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"const response = pm.response.json();",
+							"",
+							"pm.test(\"resposne is 200\", () => {",
+							"   pm.response.to.have.status(200); ",
+							"});",
+							"",
+							"pm.test(\"response lenghth is > 0\", () => {",
+							"   pm.expect(response.length > 0).to.eql(true); ",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:3535/api/users?firstName=t",
 					"protocol": "http",
@@ -137,8 +198,7 @@
 					"query": [
 						{
 							"key": "firstName",
-							"value": "t",
-							"equals": true
+							"value": "t"
 						}
 					]
 				}
@@ -152,17 +212,26 @@
 					"listen": "test",
 					"script": {
 						"id": "f1c0acd6-193c-4267-b553-6e995f56361f",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"pm.test(\"response is 400\", () => {",
+							"   pm.response.to.have.status(400); ",
+							"});",
+							"",
+							"pm.test(\"has proper query\", () => {",
+							"    pm.expect(pm.response.text()).to.eql(\"Improper query sent in request: citty=new york\");",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:3535/api/users?citty=new york",
 					"protocol": "http",
@@ -177,8 +246,7 @@
 					"query": [
 						{
 							"key": "citty",
-							"value": "new york",
-							"equals": true
+							"value": "new york"
 						}
 					]
 				}
@@ -192,10 +260,26 @@
 					"listen": "test",
 					"script": {
 						"id": "3173c6ef-98fb-405c-8a3f-ebf800e78256",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"const response = pm.response.json();",
+							"",
+							"pm.test(\"status is 200\", () => {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"length is 1\", () => {",
+							"   pm.expect(response.length).to.eql(1); ",
+							"});",
+							"",
+							"pm.test(\"email is garey@ilovecode.com\", () => {",
+							"    pm.expect(response[0].email).to.eql(\"garey@ilovecode.com\");",
+							"});",
+							"",
+							"pm.test(\"city is pittsburg\", () => {",
+							"    pm.expect(response[0].city).to.eql(\"Pittsburg\");",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -234,10 +318,16 @@
 					"listen": "test",
 					"script": {
 						"id": "2f7375ff-7064-476c-be12-3b43dc6e3a94",
-						"type": "text/javascript",
 						"exec": [
-							""
-						]
+							"pm.test(\"status code is 400\", () => {",
+							"   pm.response.to.have.status(400); ",
+							"});",
+							"",
+							"pm.test(\"correct error\", () => {",
+							"    pm.expect(pm.response.text()).to.eql(\"Error with user ID in request.\");",
+							"});"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -271,6 +361,47 @@
 		},
 		{
 			"name": "POST - Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "47936a2a-82fc-4235-a2a2-204a9e353aae",
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"const user = response[0];\r",
+							"\r",
+							"const expectedUser = {\r",
+							"  id: user.id,\r",
+							"  first_name: \"Bruce\",\r",
+							"  last_name: \"Wayne\",\r",
+							"  email: \"bruce@scarybat.com\",\r",
+							"  city: \"Gotham\",\r",
+							"  state: \"New Jersey\",\r",
+							"  phone: \"(856) 6044252\"\r",
+							"};\r",
+							"\r",
+							"pm.test(\"resposne is 200\", () => {\r",
+							"   pm.response.to.have.status(200); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"length is 1\", () => {\r",
+							"   pm.expect(Array.isArray(response)).to.eql(true);\r",
+							"   pm.expect(response.length).to.eql(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"user has correct data\", () => {\r",
+							"   pm.expect(user).to.eql(expectedUser);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"id is a number\", () => {\r",
+							"   pm.expect(typeof user.id).to.eql(\"number\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -300,6 +431,24 @@
 		},
 		{
 			"name": "POST - Create user ( error )",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "099408a2-0821-44dd-a863-067c19e69810",
+						"exec": [
+							"pm.test(\"status code is 400\", () => {",
+							"   pm.response.to.have.status(400); ",
+							"});",
+							"",
+							"pm.test(\"correct error\", () => {",
+							"    pm.expect(pm.response.text()).to.eql(\"All needed user info was not sent in the body of request.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -329,6 +478,24 @@
 		},
 		{
 			"name": "DELETE - Remove user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2a7fe29c-f448-4421-a293-2b79f81e4613",
+						"exec": [
+							"pm.test(\"status is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"id is 66\", () => {",
+							"   pm.expect(pm.response.json()[0].id).to.eql(66); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -359,6 +526,24 @@
 		},
 		{
 			"name": "DELETE - Remove user ( error )",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bfecf24-e9d8-4692-baa7-476ea91b66e7",
+						"exec": [
+							"pm.test(\"status code is 404\", () => {",
+							"   pm.response.to.have.status(404); ",
+							"});",
+							"",
+							"pm.test(\"correct error\", () => {",
+							"    pm.expect(pm.response.text()).to.eql(\"No user with an ID of 508.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
